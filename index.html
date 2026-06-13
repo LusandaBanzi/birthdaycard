@@ -1,190 +1,443 @@
-<!DOCTYPE html> 
-<html lang="en"> 
-<head> 
-<meta charset="UTF-8"> 
-<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-<title>Happy Birthday Mam'Nkosi</title> 
-<style> 
-*{ margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; } 
-body{ 
-    overflow:hidden; 
-    background: radial-gradient(circle at center, #ff69b4 0%, #ff1493 50%, #2a0018 100%);
-    height:100vh; 
-    perspective: 1000px; /* Critical for 3D depth */
-} 
-/* OPEN SCREEN */ 
-#welcomeScreen{ position:absolute; width:100%; height:100%; display:flex; justify-content:center; align-items:center; flex-direction:column; background:linear-gradient(135deg,#ff69b4,#ffd700); z-index:10; color:white; text-align:center; } 
-#welcomeScreen h1{ font-size:3rem; margin-bottom:20px; text-shadow:2px 2px 10px rgba(0,0,0,0.3); } 
-.openBtn{ padding:18px 40px; font-size:1.2rem; border:none; border-radius:50px; background:white; color:#ff1493; cursor:pointer; font-weight:bold; box-shadow:0 0 20px rgba(255,255,255,.7); transition:.4s; } 
-.openBtn:hover{ transform:scale(1.1); } 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Mam'Nkosi ❤️</title>
 
-/* 3D INTERACTIVE UI CONTAINER */ 
-#card{ 
-    display:none; 
-    width:100%; 
-    height:100vh; 
-    position:relative; 
-    overflow:hidden; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transform-style: preserve-3d;
-} 
-.card-content{ 
-    width:85%; 
-    max-width:800px; 
-    padding:40px; 
-    background: rgba(255, 255, 255, 0.08); 
-    backdrop-filter: blur(20px); 
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 30px; 
-    text-align:center; 
-    color:white; 
-    box-shadow: 0 25px 50px rgba(0,0,0,0.3), inset 0 0 20px rgba(255,255,255,0.2); 
-    border: 1px solid rgba(255,255,255,0.25);
-    z-index:5; 
-    transform: rotateX(0deg) rotateY(0deg);
-    transition: transform 0.1s ease-out; /* Keeps mouse tracking snappy */
-    transform-style: preserve-3d;
-} 
-
-/* PUSH ELEMENTS OUT ALONG THE Z-AXIS FOR A REAL 3D DEPTH EFFECT */
-.photo { transform: translateZ(50px); }
-.card-content h1 { transform: translateZ(40px); }
-.word-span { transform: translateZ(20px); }
-
-/* ANIMATED BIRTHDAY TEXT */
-.card-content h1{ 
-    font-size:3rem; 
-    margin-bottom:15px; 
-    color:#fff; 
-    text-shadow:2px 2px 8px #ff1493; 
-    display: inline-block; 
-    animation: celebrateText 3s ease-in-out infinite; 
-} 
-@keyframes celebrateText {
-  0% { transform: translateZ(40px) scale(1); text-shadow: 2px 2px 8px #ff1493; }
-  50% { transform: translateZ(55px) scale(1.05); text-shadow: 0 0 20px #fff, 0 0 35px #ff69b4; }
-  100% { transform: translateZ(40px) scale(1); text-shadow: 2px 2px 8px #ff1493; }
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
 }
 
-.card-content p{ font-size:1.15rem; line-height:1.7; margin-top:20px; } 
-
-/* WORD BY WORD ANIMATION CLASSES */
-.word-span {
-    display: inline-block;
-    opacity: 0;
-    transform: translateY(10px);
-    animation: revealWord 0.4s ease-out forwards;
+body{
+    overflow:hidden;
+    height:100vh;
+    background:#000;
 }
-@keyframes revealWord {
-    to {
-        opacity: 1;
-        transform: translateY(0) translateZ(20px);
+
+/* OPEN SCREEN */
+
+.start-screen{
+    position:fixed;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    background:linear-gradient(
+        135deg,
+        #ff6b9d,
+        #ff9a9e,
+        #fad0c4
+    );
+    z-index:999;
+}
+
+.start-screen h1{
+    color:white;
+    margin-bottom:30px;
+    text-align:center;
+    font-size:2.5rem;
+    text-shadow:0 0 20px rgba(255,255,255,.5);
+}
+
+#openBtn{
+    padding:18px 45px;
+    border:none;
+    border-radius:50px;
+    font-size:1.2rem;
+    cursor:pointer;
+    background:white;
+    color:#ff4f81;
+    font-weight:bold;
+    transition:.4s;
+    box-shadow:0 10px 30px rgba(0,0,0,.3);
+}
+
+#openBtn:hover{
+    transform:scale(1.08);
+}
+
+/* MAIN */
+
+.container{
+    position:relative;
+    width:100%;
+    height:100vh;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+}
+
+/* Background image */
+.bg{
+    position:absolute;
+    inset:0;
+    background:url("mamnkosi.jpg") center center/cover no-repeat;
+    filter:blur(5px) brightness(.45);
+    transform:scale(1.1);
+}
+
+.overlay{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        rgba(0,0,0,.2),
+        rgba(0,0,0,.6)
+    );
+}
+
+.card{
+    position:relative;
+    z-index:10;
+    width:90%;
+    max-width:750px;
+    padding:35px;
+    border-radius:30px;
+    background:rgba(255,255,255,.12);
+    backdrop-filter:blur(15px);
+    text-align:center;
+    color:white;
+    box-shadow:0 0 50px rgba(255,255,255,.2);
+    animation:cardEntrance 2s ease;
+}
+
+@keyframes cardEntrance{
+    from{
+        opacity:0;
+        transform:translateY(80px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
     }
 }
 
-/* PHOTO Styling */ 
-.photo{ width:200px; height:200px; border-radius:50%; margin:auto; overflow:hidden; border:6px solid white; box-shadow:0 0 30px rgba(255,255,255,.5); } 
-.photo img{ width:100%; height:100%; object-fit:cover; } 
-
-/* DECORATIONS */ 
-.balloon{ position:absolute; bottom:-150px; font-size:60px; animation:float 12s linear infinite; pointer-events: none;} 
-@keyframes float{ 0%{ transform:translateY(0); } 100%{ transform:translateY(-120vh); } } 
-.confetti{ position:absolute; width:12px; height:12px; background:red; animation:fall 6s linear infinite; pointer-events: none;} 
-@keyframes fall{ 0%{ transform:translateY(-100px) rotate(0deg); } 100%{ transform:translateY(120vh) rotate(720deg); } } 
-.heart{ position:absolute; font-size:25px; color:white; animation:hearts 8s linear infinite; pointer-events: none;} 
-@keyframes hearts{ 0%{ transform:translateY(100vh) scale(0.5); opacity:0; } 50%{ opacity:1; } 100%{ transform:translateY(-100px) scale(1.5); opacity:0; } } 
-</style> 
-</head> 
-<body> 
-
-<div id="welcomeScreen"> 
-<button class="openBtn" onclick="openCard()"> 💖 Click To Open Your Birthday Surprise 💖 </button> </div> 
-
-<div id="card" style="display: none;"> 
-<div class="card-content" id="3dCard"> 
-<div class="photo"> 
-<img src="WhatsApp Image 2026-06-10 at 20.03.50.jpeg" alt="Mam'Nkosi"> </div> 
-<h1>🌹 Happy Birthday Mam'Nkosi 🌹</h1> 
-
-<!-- Paragraph texts ready for Dynamic Word Splitting Injection via JavaScript -->
-<p class="animate-text">Today we celebrate a truly wonderful woman, a woman of strength, grace, wisdom, and love. May this special day bring you endless joy, beautiful memories, and countless blessings.</p> 
-<p class="animate-text">May God bless you with good health, happiness, peace, prosperity, and many more beautiful years ahead. Your kindness and warmth touch the hearts of everyone around you.</p> 
-<p class="animate-text">✨ May every dream you have come true. May your smile shine brighter than ever. May your life continue to be filled with love, laughter, and God's abundant favor. ✨</p> 
-<p class="animate-text" style="margin-top:25px;font-size:1.4rem;font-weight:bold;">❤️ From Lusanda❤️</p> 
-</div> </div> 
-
-<audio id="birthdayMusic" loop> 
-<source src="birthdaysong.mp3" type="audio/mpeg"> 
-</audio> 
-
-<script> 
-function openCard(){ 
-    document.getElementById("welcomeScreen").style.display="none"; 
-    document.getElementById("card").style.display="flex"; 
-    
-    const music = document.getElementById("birthdayMusic");
-    music.play().catch(error => { console.log("Playback blocked"); }); 
-    
-    // Fire up structural animations
-    startWordAnimation();
-    init3dTracking();
-    createBalloons(); 
-    createConfetti(); 
-    createHearts(); 
-} 
-
-/* WORD-BY-WORD ANIMATION LOGIC */
-function startWordAnimation() {
-    const textParagraphs = document.querySelectorAll(".animate-text");
-    let globalWordCounter = 0;
-    const delayBetweenWords = 80; // Speed of text reveal in milliseconds
-
-    textParagraphs.forEach((p) => {
-        const wordsArray = p.textContent.split(" ");
-        p.innerHTML = ""; // Empty original plaintext
-
-        wordsArray.forEach((word) => {
-            const span = document.createElement("span");
-            span.className = "word-span";
-            span.innerHTML = word + "&nbsp;"; // Retain space layout
-            span.style.animationDelay = `${globalWordCounter * delayBetweenWords}ms`;
-            p.appendChild(span);
-            globalWordCounter++;
-        });
-    });
+.photo-frame{
+    width:220px;
+    height:220px;
+    border-radius:50%;
+    overflow:hidden;
+    margin:auto;
+    border:6px solid rgba(255,255,255,.5);
+    box-shadow:0 0 35px rgba(255,255,255,.4);
+    animation:glow 3s infinite;
 }
 
-/* INTERACTIVE 3D MOUSE & GYROSCOPE TILT LOGIC */
-function init3dTracking() {
-    const cardContainer = document.getElementById("card");
-    const innerCard = document.getElementById("3dCard");
+.photo-frame img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
 
-    // Desktop Mouse Tracking
-    cardContainer.addEventListener("mousemove", (e) => {
-        const xAxis = (window.innerWidth / 2 - e.clientX) / 25; 
-        const yAxis = (window.innerHeight / 2 - e.clientY) / 25;
-        innerCard.style.transform = `rotateY(${-xAxis}deg) rotateX(${yAxis}deg)`;
-    });
-
-    // Reset rotation positioning when mouse departs card space
-    cardContainer.addEventListener("mouseleave", () => {
-        innerCard.style.transform = "rotateX(0deg) rotateY(0deg)";
-    });
-
-    // Mobile Device Gyroscope Tilt Event Listener
-    if (window.DeviceOrientationEvent) {
-        window.addEventListener("deviceorientation", (e) => {
-            if(!e.gamma || !e.beta) return;
-            const tiltX = Math.min(Math.max(e.gamma, -30), 30) / 2;
-            const tiltY = Math.min(Math.max(e.beta - 45, -30), 30) / 2;
-            innerCard.style.transform = `rotateY(${tiltX}deg) rotateX(${tiltY}deg)`;
-        });
+@keyframes glow{
+    50%{
+        box-shadow:0 0 60px rgba(255,255,255,.8);
     }
 }
 
-function createBalloons(){ const emojis=["🎈","🎉","🎂","🎁"]; for(let i=0;i<25;i++){ let balloon=document.createElement("div"); balloon.className="balloon"; balloon.innerHTML=emojis[Math.floor(Math.random()*emojis.length)]; balloon.style.left=Math.random()*100+"%"; balloon.style.animationDuration=(8+Math.random()*8)+"s"; document.getElementById("card").appendChild(balloon); } } function createConfetti(){ const colors=["red","blue","yellow","green","purple","pink","orange"]; for(let i=0;i<100;i++){ let conf=document.createElement("div"); conf.className="confetti"; conf.style.left=Math.random()*100+"%"; conf.style.background=colors[Math.floor(Math.random()*colors.length)]; conf.style.animationDelay=Math.random()*5+"s"; document.getElementById("card").appendChild(conf); } } function createHearts(){ for(let i=0;i<30;i++){ let heart=document.createElement("div"); heart.className="heart"; heart.innerHTML="💖"; heart.style.left=Math.random()*100+"%"; heart.style.animationDelay=Math.random()*8+"s"; document.getElementById("card").appendChild(heart); } } 
-</script> 
-</body> 
+h1{
+    margin-top:20px;
+    margin-bottom:20px;
+    color:#fff7d6;
+    animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+    50%{
+        transform:scale(1.05);
+    }
+}
+
+#message{
+    min-height:140px;
+    font-size:1.3rem;
+    line-height:1.8;
+    font-weight:500;
+}
+
+.signature{
+    margin-top:20px;
+    font-size:1.5rem;
+    color:#ffd700;
+    font-weight:bold;
+}
+
+/* BALLOONS */
+
+.balloon{
+    position:absolute;
+    bottom:-150px;
+    font-size:3rem;
+    animation:floatUp linear infinite;
+    opacity:.8;
+}
+
+@keyframes floatUp{
+    from{
+        transform:translateY(0);
+    }
+    to{
+        transform:translateY(-130vh);
+    }
+}
+
+/* HEARTS */
+
+.heart{
+    position:absolute;
+    color:#ff4f81;
+    animation:hearts linear infinite;
+}
+
+@keyframes hearts{
+    from{
+        transform:translateY(0) rotate(0deg);
+        opacity:1;
+    }
+    to{
+        transform:translateY(-120vh) rotate(360deg);
+        opacity:0;
+    }
+}
+
+/* SPARKLES */
+
+.sparkle{
+    position:absolute;
+    color:white;
+    animation:sparkle 5s linear infinite;
+}
+
+@keyframes sparkle{
+    50%{
+        transform:scale(1.8);
+    }
+}
+
+@media(max-width:768px){
+
+    .photo-frame{
+        width:170px;
+        height:170px;
+    }
+
+    h1{
+        font-size:1.6rem;
+    }
+
+    #message{
+        font-size:1rem;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" loop>
+    <source src="birthdaysong.mp3" type="audio/mpeg">
+</audio>
+
+<!-- OPEN PAGE -->
+
+<div class="start-screen" id="startScreen">
+    <h1>🎂 Happy Birthday Mam'Nkosi ❤️</h1>
+    <button id="openBtn">🎁 Open Your Birthday Card</button>
+</div>
+
+<!-- MAIN CARD -->
+
+<div class="container" id="container">
+
+    <div class="bg"></div>
+    <div class="overlay"></div>
+
+    <div class="card">
+
+        <div class="photo-frame">
+            <img src="WhatsApp Image 2026-06-10 at 20.03.50.jpeg" alt="Mam'Nkosi">
+        </div>
+
+        <h1>Happy Birthday Mam'Nkosi ❤️</h1>
+
+        <div id="message"></div>
+
+        <div class="signature">
+            With Love, Lusanda ❤️
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+const openBtn = document.getElementById("openBtn");
+const startScreen = document.getElementById("startScreen");
+const container = document.getElementById("container");
+const music = document.getElementById("music");
+const messageBox = document.getElementById("message");
+
+/* Birthday Messages */
+
+const messages = [
+
+"Today is a very special day because we celebrate an amazing woman.",
+
+"Happy Birthday Mam'Nkosi ❤️",
+
+"May God bless you with good health, endless happiness and abundant favor.",
+
+"May every prayer you have made be answered beyond your expectations.",
+
+"You are appreciated more than words can express.",
+
+"May your smile shine brighter than ever this year.",
+
+"May your days be filled with peace, love and beautiful memories.",
+
+"Thank you for being a blessing to so many lives.",
+
+"May God's grace continue to guide and protect you every day.",
+
+"Enjoy every moment of your special day.",
+
+"Happy Birthday once again Mam'Nkosi ❤️",
+
+"With all my love and warm wishes...",
+
+"From Lusanda ❤️"
+];
+
+let index = 0;
+
+/* Typewriter Effect */
+
+function typeWriter(text, callback){
+
+    let i = 0;
+    messageBox.innerHTML = "";
+
+    let typing = setInterval(() => {
+
+        messageBox.innerHTML += text.charAt(i);
+        i++;
+
+        if(i >= text.length){
+            clearInterval(typing);
+
+            setTimeout(() => {
+                callback();
+            }, 2500);
+        }
+
+    }, 50);
+}
+
+function showMessages(){
+
+    if(index < messages.length){
+
+        typeWriter(messages[index], () => {
+            index++;
+            showMessages();
+        });
+
+    }
+}
+
+/* Floating Hearts */
+
+function createHeart(){
+
+    let heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "❤️";
+
+    heart.style.left = Math.random()*100 + "vw";
+    heart.style.bottom = "-50px";
+    heart.style.fontSize = (20 + Math.random()*25) + "px";
+    heart.style.animationDuration = (6 + Math.random()*5) + "s";
+
+    document.body.appendChild(heart);
+
+    setTimeout(()=>{
+        heart.remove();
+    },12000);
+}
+
+/* Balloons */
+
+function createBalloon(){
+
+    const emojis = ["🎈","🎈","🎈","🎉","🎊"];
+
+    let balloon = document.createElement("div");
+
+    balloon.className = "balloon";
+    balloon.innerHTML =
+    emojis[Math.floor(Math.random()*emojis.length)];
+
+    balloon.style.left =
+    Math.random()*100 + "vw";
+
+    balloon.style.animationDuration =
+    (8 + Math.random()*6) + "s";
+
+    document.body.appendChild(balloon);
+
+    setTimeout(()=>{
+        balloon.remove();
+    },15000);
+}
+
+/* Sparkles */
+
+function createSparkle(){
+
+    let sparkle = document.createElement("div");
+
+    sparkle.className = "sparkle";
+    sparkle.innerHTML = "✨";
+
+    sparkle.style.left =
+    Math.random()*100 + "vw";
+
+    sparkle.style.top =
+    Math.random()*100 + "vh";
+
+    sparkle.style.fontSize =
+    (10 + Math.random()*20) + "px";
+
+    document.body.appendChild(sparkle);
+
+    setTimeout(()=>{
+        sparkle.remove();
+    },5000);
+}
+
+/* Open Card */
+
+openBtn.addEventListener("click", () => {
+
+    startScreen.style.display = "none";
+    container.style.display = "flex";
+
+    music.play();
+
+    showMessages();
+
+    setInterval(createHeart, 400);
+    setInterval(createBalloon, 1500);
+    setInterval(createSparkle, 300);
+
+});
+</script>
+
+</body>
 </html>
